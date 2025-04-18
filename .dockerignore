@@ -1,0 +1,41 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Environments
+.venv
+.env
+.env.bak/
+.venv.bak/
+
+# Vscode
+.vscode/
+
+# Pycharm
+.idea/
+
+# ruff
+.ruff_cache/
+
+### Django ###
+*.log
+*.pot
+*.pyc
+__pycache__/
+local_settings.py
+db.sqlite3
+db.sqlite3.bak
+db.sqlite3-journal
+media
+staticfiles/
+
+# Git
+.git
+.gitignore
+
+# Misc
+.DS_Store

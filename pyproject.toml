@@ -1,0 +1,45 @@
+[project]
+name = "outili"
+version = "0.1.0"
+description = "Backend of outili, an e-learning platform."
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "django>=5.2",
+    "django-cors-headers>=4.7.0",
+    "django-minio-storage>=0.5.7",
+    "environs[django]>=14.1.1",
+    "gunicorn>=23.0.0",
+    "psycopg[binary]>=3.2.9",
+]
+
+[tool.ruff]
+exclude = [
+    # Exclude all migration files
+    "**/migrations/*"
+]
+
+[tool.ruff.lint]
+select = [
+    "E",  # pycodestyle errors
+    "W",  # pycodestyle warnings
+    "F",  # pyflakes
+    "UP", # pyupgrade - suggests modern Python syntax
+    "S",  # flake8-bandit - security checks
+    "B",  # flake8-bugbear - common bugs/pitfalls
+    "SIM",# flake8-simplify - code simplifications
+    "I",  # isort - import sorting
+]
+
+[tool.ruff.lint.per-file-ignores]
+"**/test/*.py" = [
+    "S105",  # Ignore hardcoded passwords 
+    "S106",  # Ignore hardcoded authentication tokens 
+]
+
+[dependency-groups]
+dev = [
+    "pre-commit>=4.2.0",
+    "ruff>=0.11.6",
+]
+
