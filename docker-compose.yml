@@ -43,7 +43,7 @@ services:
 
   pgadmin:
     image: dpage/pgadmin4:9.3.0
-    container_name: pgadmin
+    container_name: outili_pgadmin
     environment:
       PGADMIN_DEFAULT_EMAIL: pgadmin4@pgadmin.org
       PGADMIN_DEFAULT_PASSWORD: password
@@ -58,6 +58,7 @@ services:
 
   maildev:
     image: maildev/maildev:2.2.1
+    container_name: outili_maildev
     environment:
       - TZ=Asia/Shanghai
       - MAILDEV_WEB_PORT=1080
@@ -75,7 +76,7 @@ services:
 
   minio:
     image: minio/minio
-    container_name: task-tracker-minio
+    container_name: outili_minio
     ports:
       - "9000:9000"
       - "9001:9001"

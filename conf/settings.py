@@ -8,6 +8,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
+from datetime import timedelta
 from pathlib import Path
 
 from environs import Env
@@ -42,10 +43,18 @@ DJANGO_APPS = [
 
 THIRD_PARTY_APPS = [
     "corsheaders",
+    "djoser",
+    "drf_spectacular",
+    "django_filters",
     "minio_storage",
+    "rest_framework",
+    "rest_framework_simplejwt",
 ]
 
-LOCAL_APPS = []
+LOCAL_APPS = [
+    "core",
+    "users",
+]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
@@ -69,6 +78,7 @@ TEMPLATES = [
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
+                "django.template.context_processors.debug",
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
@@ -172,3 +182,77 @@ SESSION_COOKIE_SAMESITE = env.str("SESSION_COOKIE_SAMESITE", "None")
 SESSION_COOKIE_SECURE = env.bool("SESSION_COOKIE_SECURE", True)
 CORS_ALLOWED_ORIGINS = tuple(env.list("CORS_ALLOWED_ORIGINS"))
 CSRF_TRUSTED_ORIGINS = tuple(env.list("CSRF_TRUSTED_ORIGINS"))
+
+REST_FRAMEWORK = {
+    # Pagination
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
+    "PAGE_SIZE": 10,
+    # Schema config
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+    # API Versioning
+    "DEFAULT_VERSIONING_CLASS": "rest_framework.versioning.URLPathVersioning",
+    "DEFAULT_VERSION": env.str("API_DEFAULT_VERSION", default="v1"),
+    "ALLOWED_VERSIONS": env.list("API_ALLOWED_VERSIONS", default=["v1"]),
+    # Searching and Filtering
+    "DEFAULT_FILTER_BACKENDS": [
+        "django_filters.rest_framework.DjangoFilterBackend",
+        "rest_framework.filters.SearchFilter",
+        "rest_framework.filters.OrderingFilter",
+    ],
+    # Responses handling
+    "DEFAULT_RENDERER_CLASSES": [
+        "core.renderers.JSONRenderer",
+    ],
+    # Auth
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    ],
+}
+
+SPECTACULAR_SETTINGS = {
+    "TITLE": "outili API",
+    "DESCRIPTION": "API documentation for outili backend.",
+    "VERSION": env.str("API_DOCUMENTATION_VERSION", default="1.0.0"),
+    "SCHEMA_PATH_PREFIX": "/api/v[0-g]+",
+    "SERVE_INCLUDE_SCHEMA": False,
+    "COMPONENT_SPLIT_REQUEST": True,
+    "POSTPROCESSING_HOOKS": ["core.hooks.response_format_hook"],
+    "SWAGGER_UI_SETTINGS": {
+        "deepLinking": True,
+        "persistAuthorization": True,
+    },
+}
+
+AUTH_USER_MODEL = "users.User"
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=1),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
+    "TOKEN_OBTAIN_SERIALIZER": "users.serializers.TokenObtainPairSerializer",
+}
+
+DOMAIN = env.str("DOMAIN", "outili.com")
+SITE_NAME = "outili"
+SITE_ID = env.int("SITE_ID", default=1)
+
+EMAIL_BACKEND = (
+    f"django.core.mail.backends.{env.str('EMAIL_BACKEND', default='smtp')}.EmailBackend"
+)
+EMAIL_HOST = env.str("EMAIL_HOST")
+EMAIL_PORT = env.int("EMAIL_PORT", default=25)
+EMAIL_USE_TLS = env.bool("EMAIL_USE_TLS", default=True)
+EMAIL_HOST_USER = env.str("EMAIL_HOST_USER", default="")
+EMAIL_HOST_PASSWORD = env.str("EMAIL_HOST_PASSWORD", default="")
+
+DJOSER = {
+    "SEND_ACTIVATION_EMAIL": True,
+    "ACTIVATION_URL": "activate/{uid}/{token}",
+    "PASSWORD_RESET_CONFIRM_URL": "password/reset/confirm/{uid}/{token}",
+    "SERIALIZERS": {
+        "current_user": "users.serializers.UserSerializer",
+        "user": "users.serializers.UserSerializer",
+        "user_create": "users.serializers.UserCreateSerializer",
+    },
+}
+
+AUTHENTICATION_BACKENDS = ("django.contrib.auth.backends.ModelBackend",)
