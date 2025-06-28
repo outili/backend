@@ -14,9 +14,9 @@ class CourseFilter(filters.FilterSet):
         to_field_name="id",
         help_text="Filter by the ID of instructor",
     )
-    created_at = filters.DateFromToRangeFilter(
+    created_at = filters.DateTimeFromToRangeFilter(
         field_name="created_at",
-        help_text="Filter by the date of creation",
+        help_text="Filter by the date-time of creation",
     )
 
     class Meta:
@@ -51,9 +51,9 @@ class EnrollmentFilter(filters.FilterSet):
         to_field_name="id",
         help_text="Filter by the ID of course",
     )
-    enrolled_at = filters.DateFromToRangeFilter(
+    enrolled_at = filters.DateTimeFromToRangeFilter(
         field_name="enrolled_at",
-        help_text="Filter by the date of enrolment",
+        help_text="Filter by the date-time of enrolment",
     )
 
     class Meta:
