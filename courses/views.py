@@ -46,8 +46,6 @@ class CourseViewSet(viewsets.ModelViewSet):
         parameters=[
             OpenApiParameter(
                 name="ordering",
-                type=str,
-                location=OpenApiParameter.QUERY,
                 description="Field to order by (use prefix '-' for descending order).",
                 enum=ordering_fields + [f"-{field}" for field in ordering_fields],
             )
@@ -74,8 +72,6 @@ class ContentViewSet(viewsets.ModelViewSet):
         parameters=[
             OpenApiParameter(
                 name="ordering",
-                type=str,
-                location=OpenApiParameter.QUERY,
                 description="Field to order by (use prefix '-' for descending order).",
                 enum=ordering_fields + [f"-{field}" for field in ordering_fields],
             )
@@ -101,8 +97,6 @@ class EnrollmentViewSet(viewsets.ModelViewSet):
         parameters=[
             OpenApiParameter(
                 name="ordering",
-                type=str,
-                location=OpenApiParameter.QUERY,
                 description="Field to order by (use prefix '-' for descending order).",
                 enum=ordering_fields + [f"-{field}" for field in ordering_fields],
             )
@@ -123,8 +117,6 @@ class ProgressViewSet(viewsets.ModelViewSet):
         parameters=[
             OpenApiParameter(
                 name="ordering",
-                type=str,
-                location=OpenApiParameter.QUERY,
                 description="Field to order by (use prefix '-' for descending order).",
                 enum=ordering_fields + [f"-{field}" for field in ordering_fields],
             )
