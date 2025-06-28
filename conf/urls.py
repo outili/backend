@@ -9,6 +9,7 @@ from drf_spectacular.views import (
 urlpatterns = [
     path("admin/", admin.site.urls),
     re_path(r"^api/(?P<version>v[0-9]+)/", include("courses.urls")),
+    re_path(r"^api/(?P<version>v[0-9]+)/", include("quizzes.urls")),
     re_path(r"^api/(?P<version>v[0-9]+)/", include("users.urls")),
     # Documentation
     re_path(
