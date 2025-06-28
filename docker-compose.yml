@@ -1,7 +1,7 @@
 services:
   backend:
     build: .
-    container_name: backend
+    container_name: outili_backend
     ports:
       - "8000:8000"
     env_file:
@@ -16,13 +16,11 @@ services:
         condition: service_started
     networks:
       - outili
-    volumes:
-      - .:/app
     restart: unless-stopped
 
   postgres:
     image: postgres:17
-    container_name: postgres
+    container_name: outili_postgres
     environment:
       - POSTGRES_USER=username
       - POSTGRES_PASSWORD=password
@@ -89,7 +87,6 @@ services:
     restart: unless-stopped
     networks:
       - outili
-
 
 volumes:
   postgres:

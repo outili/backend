@@ -9,7 +9,7 @@ COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
 COPY pyproject.toml .
 COPY uv.lock .
-RUN uv sync --no-dev --locked --no-editable --no-install-project
+RUN uv sync --no-dev --locked --no-editable
 
 ENV PATH="/app/.venv/bin:$PATH"
 
@@ -20,4 +20,4 @@ EXPOSE 8000
 RUN chmod +x entrypoint.sh
 ENTRYPOINT ["./entrypoint.sh"]
 
-CMD ["gunicorn", "conf.wsgi:application", "--bind", "0.0.0.0:8000"]
+CMD ["gunicorn", "conf.wsgi:application", "--bind", "0.0.0.0:8000", "--reload"]
