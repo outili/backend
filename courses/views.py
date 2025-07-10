@@ -26,8 +26,18 @@ class CourseViewSet(viewsets.ModelViewSet):
     serializer_class = CourseSerializer
     permission_classes = [AllowAny]
     filterset_class = CourseFilter
-    search_fields = ["title", "description", "instructor__name"]
-    ordering_fields = ["title", "instructor__name", "created_at"]
+    search_fields = [
+        "title",
+        "description",
+        "instructor__first_name",
+        "instructor__last_name",
+    ]
+    ordering_fields = [
+        "title",
+        "instructor__first_name",
+        "instructor__last_name",
+        "created_at",
+    ]
 
     def get_queryset(self):
         queryset = super().get_queryset()
@@ -85,10 +95,16 @@ class EnrollmentViewSet(viewsets.ModelViewSet):
     queryset = Enrollment.objects.all()
     serializer_class = EnrollmentSerializer
     filterset_class = EnrollmentFilter
-    search_fields = ["course__title", "course__description", "course__instructor__name"]
+    search_fields = [
+        "course__title",
+        "course__description",
+        "course__instructor__first_name",
+        "course__instructor__last_name",
+    ]
     ordering_fields = [
         "course__title",
-        "course__instructor__name",
+        "course__instructor__first_name",
+        "course__instructor__last_name",
         "course__created_at",
         "enrolled_at",
     ]
